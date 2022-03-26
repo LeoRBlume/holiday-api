@@ -1,5 +1,7 @@
 package br.com.api.holiday.service.form;
 
+import java.time.Instant;
+
 public class HolidayForm {
     private String name;
     private String name_local;

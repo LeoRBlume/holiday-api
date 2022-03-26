@@ -1,30 +1,39 @@
 package br.com.api.holiday.model;
 
 import br.com.api.holiday.service.form.HolidayForm;
+import ch.qos.logback.core.spi.LogbackLock;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+@Entity
 public class Holiday {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String country;
     private String location;
     private String type;
-    private String date;
+    private LocalDate date;
     private String week_day;
 
     public Holiday() {
     }
 
     public Holiday(HolidayForm holidayForm) {
+
         this.name = holidayForm.getName();
         this.country = holidayForm.getCountry();
         this.location = holidayForm.getLocation();
         this.type = holidayForm.getType();
-        this.date = holidayForm.getDate();
+        this.date = LocalDate.of(Integer.parseInt(holidayForm.getDate_year()), Integer.parseInt(holidayForm.getDate_month()), Integer.parseInt(holidayForm.getDate_day()));
         this.week_day = holidayForm.getWeek_day();
     }
 
@@ -60,11 +69,11 @@ public class Holiday {
         this.type = type;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -120,7 +129,7 @@ public class Holiday {
 
     public static List<Holiday> converter(List<HolidayForm> holidayService) {
         List<Holiday> holidays = new ArrayList<>();
-        for (HolidayForm h : holidayService){
+        for (HolidayForm h : holidayService) {
             holidays.add(new Holiday(h));
         }
         return holidays;
@@ -129,11 +138,12 @@ public class Holiday {
     @Override
     public String toString() {
         return "Holiday{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 ", location='" + location + '\'' +
                 ", type='" + type + '\'' +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", week_day='" + week_day + '\'' +
                 '}';
     }
